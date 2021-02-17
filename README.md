@@ -7,16 +7,16 @@
 - [Back End Overview](#back-end-overview)
 - [Moving Forward](#moving-forward)
 ## Jello Overview
-Jello is based on the real web-based Trello site, focused on helping connect people and share photos and videos!
+Jello is based on the real web-based Trello site - a collaboration site that uses "boards" to organize users' projects.
 </br>
 </br>
-The front end was built using HTML, CSS, and the Pug library, while the back end was developed using the Sequelize.js ORM, and PostgreSQL.
+The front end was built using HTML, CSS, Material-UI, React, and Redux, while the back end was developed using Flask, SQLAlchemy, Alembic and PostgreSQL.
 </br>
 </br>
-Users can look at all of the pictures they have posted, the ones their friends have in the main feed, and leave comments if they wish.
+Users can explore their personal projects/boards, the lists within those boards, and the individual tasks within the lists.
 </br>
 </br>
-![scrolling in main feed](https://media.giphy.com/media/4V4Oy77v1yy7hJBqvs/giphy.gif)
+Gif showing normal activity coming soon!
 </br>
 </br>
 ## Application Architecture
@@ -24,54 +24,88 @@ Placeholder for diagram that will show technologies and how they interact with e
 </br>
 </br>
 ## Front End Overview
-### Pug
-Pug is the template engine we used through the entire front end for its ability to natively use Javascript and convert the code seamlessly into HTML that the browser can parse.
+### React
+React components are used throughout the site to provide a seamless UX, whether that be navigating from board to board, creating a new board, creating a new list, adding tasks to a list, and so on.</br>
+</br>
+### Redux
+Redux, react-redux, and redux-thunk are the foundation that manage the application's state, and provide requests and responses between the React front end and the Flask based back end.
 </br>
 </br>
-### CSS
-Using CSS and its many features we were able to acheive the look we desired. We took advantage of basic CSS features such as z-index, box-sizing, and overflow and integrated them with more advanced features such as the ever-handy Flexbox.
+In most instances, the front end will react to a change the user makes and send that change to Redux. From there Redux will update its store and then send that information to the Flask based server. Since the Redux store has the information on the change that was made, the Redux store will persist the data between refreshes just as designed.
 </br>
+</br>
+### Material-UI
+Material-UI was chosen because mainly because of its built in functions and models. It has many models that can be used, but not only that, you can build on those models to create a custom look with the base that Material-UI gave you. It is very handy, and made our design much more efficient and elegant.
+```
+                <Grid item xs={3}>
+                  <Card onClick={handleOpen} className={classes.Createboard}>
+                    Create Board
+                    </Card>
+                  <Modal
+                    open={open}
+                    onClose={handleClose}
+                    aria-labelledby="simple-modal-title"
+                    aria-describedby="simple-modal-description"
+                  >
+                    <Grid style={modalStyle} className={classes.paper}>
+                      <Grid item xs={8}>
+                        <form className={classes.modalForm}>
+                          <div style={{ backgroundColor: dynamicColor }} className={classes.inputContainer}>
+                            <InputBase autoFocus className={classes.modalInput} classes={{ focused: classes.modalInputFocused }} placeholder="Add Board Title" name="title"                                     value={title} onChange={handleBoard} />
+                          </div>
+                          <button className={classes.formButton} onClick={handleSubmit}>Create Board</button>
+                        </form>
+                      </Grid>
+                      <Grid container item xs={2} className={classes.templates}>
+                        <Grid item xs={4}>
+                          <Card className={classes.blue} onClick={() => setDynamicColor("rgb(0, 121, 191)")} />
+                        </Grid>
+                        <Grid item xs={4}>
+                          <Card className={classes.green} onClick={() => setDynamicColor("green")} />
+                        </Grid>
+                        <Grid item xs={4}>
+                          <Card className={classes.red} onClick={() => setDynamicColor("red")} />
+                        </Grid>
+                        <Grid item xs={4}>
+                          <Card className={classes.orange} onClick={() => setDynamicColor("orange")} />
+                        </Grid>
+                        <Grid item xs={4}>
+                          <Card className={classes.tan} onClick={() => setDynamicColor("tan")} />
+                        </Grid>
+                        <Grid item xs={4}>
+                          <Card className={classes.purple} onClick={() => setDynamicColor("purple")} />
+                        </Grid>
+                        <Grid item xs={4}>
+                          <Card className={classes.black} onClick={() => setDynamicColor("black")} />
+                        </Grid>
+                        <Grid item xs={4}>
+                          <Card className={classes.pink} onClick={() => setDynamicColor("pink")} />
+                        </Grid>
+                        <Grid item xs={4}>
+                          <Card className={classes.grey} onClick={() => setDynamicColor("grey")} />
+                        </Grid>
+                      </Grid>
+                    </Grid>
+                  </Modal>
+                </Grid>
+```
+The code above is an example of our integration of React, the ever-useful JSX, the "useState" React hook (setDynamicColor), and Material-UI. It uses classes and models from Material-UI that we built our own CSS into as well as the Grid system from Material-UI. The effect of using all of these together is when a user clicks "create board" a modal will pop up that a user can use to pick from 9 different colors, and see the changes happen dynamically.
 </br>
 ## Back End Overview
-### Sequelize ORM
-We decided to use the Sequelize.js library for its ease of use when creating models, migrations and seeder files. Sequelize helped streamline our interactions with the database in all facets, such as creating a model for pictures as the code below shows:
-```
-"use strict";
-const { Model } = require("sequelize");
-module.exports = (sequelize, DataTypes) => {
-  class Picture extends Model {
-
-    static associate(models) {
-      Picture.belongsTo(models.User, {
-        foreignKey: "userId",
-      });
-      Picture.hasMany(models.Comment, {
-        foreignKey: "pictureId",
-      });
-      Picture.hasMany(models.Like, {
-        foreignKey: "pictureId",
-      });
-    }
-  }
-  Picture.init(
-    {
-      userId: DataTypes.INTEGER,
-      fileLocation: DataTypes.STRING,
-      description: DataTypes.STRING(1000),
-    },
-    {
-      sequelize,
-      modelName: "Picture",
-    }
-  );
-  return Picture;
-};
-```
+### Flask
+We decided to use the Flask framework for its intuitive approach to creating a server. Flask interacts with SQLAlchemy, PostgreSQL and Alembic seamlessly and helped streamline our interactions with the database in all facets.
 </br>
-The code above is a much easier way to interact with a database and create models within it. Here we set up the model so the picture belongs to only one user, the users can have many pictures, and each picture can have many likes. This is just a taste of the features Sequelize brings, but it is a good illustation of how we took advantage of part of that utility.
-
+</br>
 ### PostgreSQL
-We leveraged PostgreSQL's ability to use different transactions, foreign keys, subqueries, triggers, and different user-defined types and functions to create our site. Sequelize and PostgreSQL work together to make our database construction, alterations, and interactions smoother.
+We leveraged PostgreSQL's ability to use different transactions, foreign keys, subqueries, triggers, and different user-defined types and functions to create our site. Flask, SQLAlchemy and PostgreSQL work together to make our database construction, alterations, and interactions smoother.
+</br>
+</br>
+### SQLAlchemy
+We chose the SQLAlchemy ORM for its ease of mapping, its far superior readability when compared to other ORMs, and the intuitive nature with which you can create models. When combined with our other back end technologies, it makes for a fantastic experience. Oh, and SQLAlchemy has amazing documentation so that always helps!
+</br>
+</br>
+### Alembic
+We landed on Alembic naturally, being so close to SQLAlchemy, and we thrived using its almost instinctual method of creating migrations and interacting with SQLAlchemy to make the necessary changes to our database.
 
 ## Moving Forward
 The next thing to do would be to implement AWS to have users be able to add pictures to their profiles. I would also add the ability of the site to change the size of the pictures dynamically so all pictures would be the same size in both feeds. It would also be nice to add a grid for the main feed once there were enough pictures to support such a feature.
