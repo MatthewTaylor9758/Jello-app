@@ -51,7 +51,7 @@ Material-UI was chosen because mainly because of its built in functions and mode
                       <Grid item xs={8}>
                         <form className={classes.modalForm}>
                           <div style={{ backgroundColor: dynamicColor }} className={classes.inputContainer}>
-                            <InputBase autoFocus className={classes.modalInput} classes={{ focused: classes.modalInputFocused }} placeholder="Add Board Title" name="title"                                     value={title} onChange={handleBoard} />
+                            <InputBase autoFocus className={classes.modalInput} classes={{ focused: classes.modalInputFocused }} placeholder="Add Board Title" name="title" value={title} onChange={handleBoard} />
                           </div>
                           <button className={classes.formButton} onClick={handleSubmit}>Create Board</button>
                         </form>
@@ -108,7 +108,7 @@ We chose the SQLAlchemy ORM for its ease of mapping, its far superior readabilit
 We landed on Alembic naturally, being so close to SQLAlchemy, and we thrived using its almost instinctual method of creating migrations and interacting with SQLAlchemy to make the necessary changes to our database.
 
 ## Moving Forward
-The next thing to do would be to implement AWS to have users be able to add pictures to their profiles. I would also add the ability of the site to change the size of the pictures dynamically so all pictures would be the same size in both feeds. It would also be nice to add a grid for the main feed once there were enough pictures to support such a feature.
+The next thing to do would be to implement AWS to have users be able to add pictures to their profiles. I would also add in some more drag and drop functionality. I would also like to add in more colors to choose from in the "create board" modal.
 
 ### Thank You
 
