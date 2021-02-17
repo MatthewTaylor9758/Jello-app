@@ -1,32 +1,88 @@
-# Flask React Project
+# Jello
+*A collaboration between Matt Taylor, Dylan Besonen, and Will MacCarty.*
+## Table of Contents 
+- [Jello Overview](#jello-overview)
+- [Application Architecture and Technologies Involved](#application-architecture)
+- [Front End Overview](#front-end-overview)
+- [Back End Overview](#back-end-overview)
+- [Moving Forward](#moving-forward)
+## Jello Overview
+Jello is based on the real web-based Trello site, focused on helping connect people and share photos and videos!
+</br>
+</br>
+The front end was built using HTML, CSS, and the Pug library, while the back end was developed using the Sequelize.js ORM, and PostgreSQL.
+</br>
+</br>
+Users can look at all of the pictures they have posted, the ones their friends have in the main feed, and leave comments if they wish.
+</br>
+</br>
+![scrolling in main feed](https://media.giphy.com/media/4V4Oy77v1yy7hJBqvs/giphy.gif)
+</br>
+</br>
+## Application Architecture
+Placeholder for diagram that will show technologies and how they interact with each other.
+</br>
+</br>
+## Front End Overview
+### Pug
+Pug is the template engine we used through the entire front end for its ability to natively use Javascript and convert the code seamlessly into HTML that the browser can parse.
+</br>
+</br>
+### CSS
+Using CSS and its many features we were able to acheive the look we desired. We took advantage of basic CSS features such as z-index, box-sizing, and overflow and integrated them with more advanced features such as the ever-handy Flexbox.
+</br>
+</br>
+## Back End Overview
+### Sequelize ORM
+We decided to use the Sequelize.js library for its ease of use when creating models, migrations and seeder files. Sequelize helped streamline our interactions with the database in all facets, such as creating a model for pictures as the code below shows:
+```
+"use strict";
+const { Model } = require("sequelize");
+module.exports = (sequelize, DataTypes) => {
+  class Picture extends Model {
 
-## Getting started
-1. Clone this repository
-2. Create a **.env** file based on the example with proper settings for your development environment
-3. Follow instructions in the [`starter_app/README.md`](./starter_app/README.md) to setup your development Back-End.
-4. Follow instructions in the [`client/README.md`](./client/README.md) to set up your development Front-End.
+    static associate(models) {
+      Picture.belongsTo(models.User, {
+        foreignKey: "userId",
+      });
+      Picture.hasMany(models.Comment, {
+        foreignKey: "pictureId",
+      });
+      Picture.hasMany(models.Like, {
+        foreignKey: "pictureId",
+      });
+    }
+  }
+  Picture.init(
+    {
+      userId: DataTypes.INTEGER,
+      fileLocation: DataTypes.STRING,
+      description: DataTypes.STRING(1000),
+    },
+    {
+      sequelize,
+      modelName: "Picture",
+    }
+  );
+  return Picture;
+};
+```
+</br>
+The code above is a much easier way to interact with a database and create models within it. Here we set up the model so the picture belongs to only one user, the users can have many pictures, and each picture can have many likes. This is just a taste of the features Sequelize brings, but it is a good illustation of how we took advantage of part of that utility.
 
-## Deploying to Heroku
+### PostgreSQL
+We leveraged PostgreSQL's ability to use different transactions, foreign keys, subqueries, triggers, and different user-defined types and functions to create our site. Sequelize and PostgreSQL work together to make our database construction, alterations, and interactions smoother.
 
-### Prepping Your Heroku Project
-1. Create a new project on your Heroku Dashboard.
-2. Under Resources click "Find more add-ons" and add the add on called "Heroku Postgres".
-3. Install the [Heroku CLI](https://devcenter.heroku.com/articles/heroku-command-line) if you haven't already.
-4. Add any Config Vars to your heroku app, either on the Heroku CLI, or on the heroku-app dashboard's Settings tab.
+## Moving Forward
+The next thing to do would be to implement AWS to have users be able to add pictures to their profiles. I would also add the ability of the site to change the size of the pictures dynamically so all pictures would be the same size in both feeds. It would also be nice to add a grid for the main feed once there were enough pictures to support such a feature.
 
-### Prepping Your React App:
-1. Run `npm run build` in your React app root folder.
-    * This will build the static files for your React app.
-    * The `postbuild` script from your `package.json` will _automatically_ move them into the `/static` directory in your flask files.
+### Thank You
 
-### Prepping your Flask App:
-1. Enter your pipenv: `pipenv shell`
-1. Update your requirements.txt with all of the packages installed in the environemt: `pip freeze > requirements.txt`
+I sincerely apprectiate the time you have taken out of your day to read this far and parse through the site we had a ton of fun making! Our team was fantastic and I cannot wait to work with them again in the future!
 
-### Pushing your container
-1. Login to heroku: `$ heroku login`
-2. Login to the heroku container registry: `$ heroku container:login`
-3. CD into `starter_app` and push your `Dockerfile` to heroku (this will build the Flask Dockerfile, and push): `$ heroku container:push web -a {NAME_OF_HEROKU_APP}`
-5. Release your docker container to heroku: `$ heroku container:release web -a {NAME_OF_HEROKU_APP}`
-6. Set up your database: `heroku run -a {NAME_OF_HEROKU_APP} {your_migration_script_here}`
-7. Profit.
+### Credits:
+
+<ul>
+  <li>Gifs: Giphy.com</li>
+  <li>Architecture Diagram is courtesy of</li> 
+</ul>
