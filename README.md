@@ -118,5 +118,5 @@ I sincerely apprectiate the time you have taken out of your day to read this far
 
 <ul>
   <li>Gifs: Giphy.com</li>
-  <li>Architecture Diagram is courtesy of</li> 
+  <li>Architecture Diagram is courtesy of https://app.diagrams.net/</li> 
 </ul>
