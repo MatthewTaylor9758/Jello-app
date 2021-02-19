@@ -16,7 +16,7 @@ The front end was built using HTML, CSS, Material-UI, React, and Redux, while th
 Users can explore their personal projects/boards, the lists within those boards, and the individual tasks within the lists.
 </br>
 </br>
-Gif showing normal activity coming soon!
+![](https://media.giphy.com/media/4dJnWp46vPGcdK8iHh/giphy.gif)
 </br>
 </br>
 ## Application Architecture
