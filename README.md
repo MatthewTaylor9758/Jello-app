@@ -20,7 +20,7 @@ Gif showing normal activity coming soon!
 </br>
 </br>
 ## Application Architecture
-Placeholder for diagram that will show technologies and how they interact with each other.
+![Jello Architecture](https://raw.githubusercontent.com/MatthewTaylor9758/Jello-app/master/client/src/images/Jello%20Architecture.png)
 </br>
 </br>
 ## Front End Overview
